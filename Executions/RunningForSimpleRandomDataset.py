@@ -19,15 +19,15 @@ from SMI_Graph import SMI_Graph
 
 # from Smoothness-Index.Smoothness_Index import Kalhor_SmoothnessIndex
 
-DATASET_PATH = "../Datasets/pythetrad-simulated/"
+DATASET_PATH = "../Datasets/RandomSimpleGraphDataset "
 
-for i in range(100):
+for i in range(1, 2):
 
 
-    df = pd.read_csv(f"{DATASET_PATH}/mydata{i}.csv")
+    df = pd.read_csv(f"{DATASET_PATH}/data{i}.csv")
     df = df.astype({col: "float64" for col in df.columns})
 
-    adj = pd.read_csv(f"{DATASET_PATH}/mygraph{i}.csv", header=None)
+    adj = pd.read_csv(f"{DATASET_PATH}/graph{i}.csv", header=None)
 
     adjacency_matrix = adj.to_numpy()
     adj_with_names = adjacency_matrix
@@ -62,4 +62,6 @@ for i in range(100):
     smi_graph.calculate_smi_matrix()
     print("Linear, SMI average for directed edges is :", smi_graph.get_average_smi_edges())
     print("Linear, SMI average when there no edges is: ", smi_graph.get_average_smi_no_edges())
+
+    smi_graph.print_matrix()
     # print(smi_graph.find_graph_knowing_num_edges(200))
