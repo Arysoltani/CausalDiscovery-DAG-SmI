@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import sys
 import torch
 import os
+import scipy.stats as stats
+
+
+from causality.inference.search import IC
+from causality.inference.independence_tests import RobustRegressionTest
 
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname (current)
@@ -19,7 +24,7 @@ from SMI_Graph import SMI_Graph
 
 # from Smoothness-Index.Smoothness_Index import Kalhor_SmoothnessIndex
 
-DATASET_PATH = "../Datasets/RandomSimpleGraphDataset "
+DATASET_PATH = "../Datasets/RandomSimpleGraphDataset"
 
 for i in range(1, 2):
 
@@ -42,6 +47,7 @@ for i in range(1, 2):
     print(f"Number of Variables is {len(name_rows)}")
     smi_graph = SMI_Graph(adj_with_names, df, method)
     smi_graph.calculate_smi_matrix()
+
     # smi_graph.check_direction_of_edges()
     print("Gamma = 0.8, SMI average for directed edges is :", smi_graph.get_average_smi_edges())
     print("Gamma = 0.8, SMI average when there no edges is: ", smi_graph.get_average_smi_no_edges())
@@ -65,3 +71,14 @@ for i in range(1, 2):
 
     smi_graph.print_matrix()
     # print(smi_graph.find_graph_knowing_num_edges(200))
+
+################## Running For IC ############################
+
+
+variable_types = {'X0' : 'c', 'X1' : 'c', 'X2' : 'c', 'X3' : 'c', 'X4' : 'c'}
+
+ic_algorithm = IC(RobustRegressionTest)
+graph = ic_algorithm.search(df, variable_types)
+
+print(graph.edges(data=True))
+
