@@ -1,0 +1,7 @@
+6
+Frequency: Pressure Displacement 
+Attack: Displacement Chord Frequency 
+Chord: Displacement Frequency 
+Velocity: Displacement Frequency 
+Displacement: Pressure 
+Pressure: 

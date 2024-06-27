@@ -9,6 +9,7 @@ sys.path.append(parent)
 from Smoothness_Index import Kalhor_SmoothnessIndex
 from SMI_Graph import SMI_Graph
 
+
 def print_matrix_to_file(matrix, filename, df):
 
   with open(filename, "w") as f:
@@ -17,10 +18,10 @@ def print_matrix_to_file(matrix, filename, df):
       row_string = " ".join(map(str, row)) + "\n"  
       f.write(row_string)
 
-dataset_path = input("Please enter the path file: ")
-method_type = input("Method type Linear or Exp: ")
+dataset_path = input()
+method_type = input()
 if(method_type == "Exp"):
-    gama_input = input("Please Enter Gamma for the method: ")
+    gama_input = input()
 
 delimiter = ","
 if(dataset_path[-3:-1] == "tx"):
