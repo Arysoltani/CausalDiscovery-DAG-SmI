@@ -1,17 +1,20 @@
 import torch 
 import numpy as np
 from Smoothness_Index import Kalhor_SmoothnessIndex
+import scipy.stats as stats
+
 
 class SMI_Graph: 
 
-    def __init__(self, graph_original, dataframe_input, method):
+    def __init__(self, graph_original, dataframe_input, method, is_graph = True):
         self.graph_inp = graph_original 
         self.cols = []
-        name_rows = graph_original[0, :]
+        name_rows = dataframe_input.columns
         num_rows = dataframe_input.shape[0]
         self.method = method
-        self.adjacency_matrix = np.delete(graph_original, 0, axis=0)
-        self.adjacency_matrix = np.array(self.adjacency_matrix, dtype="int64")
+        if(is_graph == True):
+            self.adjacency_matrix = np.delete(graph_original, 0, axis=0)
+            self.adjacency_matrix = np.array(self.adjacency_matrix, dtype="int64")
 
         for i in range(dataframe_input.shape[1]):
             self.cols.append(torch.from_numpy(np.array(dataframe_input.loc[:, name_rows[i]]).reshape(num_rows, 1)))
@@ -34,7 +37,11 @@ class SMI_Graph:
                 smi_kalhor = Kalhor_SmoothnessIndex(self.cols[i], 
                              self.cols[j], 
                              inp_normalize=True, target_normalize=True)
+                # correlation, p_value = stats.pearsonr(np.array(self.cols[i]).flatten(), np.array(self.cols[j]).flatten())
+
                 self.smi_mat[i, j] = self.smi_nodes(i, j)
+        return self.smi_mat.copy()
+                # self.smi_mat[i, j] = correlation
     
     def get_average_smi_edges(self):
         sum_smi_edges = sum(self.smi_mat[i, j] for i in range(len(self.cols)) for j in range(len(self.cols)) if (self.adjacency_matrix[i, j] == 2 or self.adjacency_matrix[i, j] == 1)
